@@ -39,37 +39,42 @@ end = time.mktime(time.strptime("2020-03-31 22:00:00", "%Y-%m-%d %H:%M:%S"))  # 
 purchase_data = []
 purchase_status_data = []
 num = 0
-for i in range(10):
+# for i in range(10):
+#     name = random.choice(name_array)
+#     quant_avg = True
+#     qunat_values = []
+quant_avg = True
+qunat_values = []
+while quant_avg and num <= 5000:
     name = random.choice(name_array)
-    quant_avg = True
-    qunat_values = []
+    # quant_avg = True
 
-    while quant_avg or num >5000:
-        quantity = random.randint(1, 10)
-        qunat_values.append(quantity)
-        # print(name,quantity,qunat_values,mean(qunat_values),mean(qunat_values) > 7,type(mean(qunat_values)))
 
-        if int(mean(qunat_values)) > 7:
-            qunat_values.remove(quantity)
-            quant_avg = False
-        else:
-            num += 1
-            purchase_data.append({"name": name, "quantity": quantity, "idd": num})
-            values = (name, quantity)
-            cursor.execute(purchase_query, values)
-            id = cursor.lastrowid
+    quantity = random.randint(1, 10)
+    qunat_values.append(quantity)
+    # print(name,quantity,qunat_values,mean(qunat_values),mean(qunat_values) > 7,type(mean(qunat_values)))
 
-            for j in range(0, len(status)):
-                dt = random.random() * (end - start) + start
-                dt = datetime.fromtimestamp(time.mktime(time.localtime(dt)))
-                stat = random.choice(status)
-                status_values = (id,stat, dt)
-                cursor.execute(purchase_status_query, status_values)
-                purchase_status_data.append({"status": stat, "purchase_id": num, "created_at": dt})
+    if int(mean(qunat_values)) > 7:
+        qunat_values.remove(quantity)
+        quant_avg = False
+    else:
+        num += 1
+        purchase_data.append({"name": name, "quantity": quantity, "idd": num})
+        values = (name, quantity)
+        cursor.execute(purchase_query, values)
+        id = cursor.lastrowid
+
+        for j in range(0, len(status)):
+            dt = random.random() * (end - start) + start
+            dt = datetime.fromtimestamp(time.mktime(time.localtime(dt)))
+            stat = random.choice(status)
+            status_values = (id,stat, dt)
+            cursor.execute(purchase_status_query, status_values)
+            purchase_status_data.append({"status": stat, "purchase_id": num, "created_at": dt})
 
 print(purchase_data)
 print(purchase_status_data)
-
+print(num)
 # purchase_app.objets.bulk_create(purchase_data)
 # PurchaseStatusModel.objets.bulk_create(purchase_status_data)
 
